@@ -3,11 +3,13 @@ import readline from "readline";
 export const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
+  terminal: false,
 });
 
 export const ask = (question: string): Promise<string> => {
   return new Promise((resolve) => {
-    rl.question(question, (answer) => resolve(answer.trim()));
+    process.stdout.write(question);
+    rl.once("line", (answer) => resolve(answer.trim()));
   });
 };
 
@@ -27,6 +29,7 @@ export const ollamFetch = async ({
       body: JSON.stringify({
         model,
         prompt: text,
+        stream: false,
       }),
     });
     return response.json();
