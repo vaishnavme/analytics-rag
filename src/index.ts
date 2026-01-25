@@ -2,6 +2,7 @@ import chalk from "chalk";
 import { ask, rl } from "./lib/utils.js";
 import seedDatabase from "./lib/seedDb.js";
 import { cli_commands } from "./lib/constants.js";
+import BuildKnowledgeBase from "./buildKnowledgeBase.js";
 
 const chatLoop = async () => {
   while (true) {
@@ -14,6 +15,8 @@ const chatLoop = async () => {
         break;
 
       case cli_commands.create_knowledge_base:
+        const knowledgeBase = new BuildKnowledgeBase();
+        await knowledgeBase.buildKnowledgeBase();
         break;
 
       case cli_commands.chat_with_your_data:

@@ -22,3 +22,12 @@ model Users {
   country    String
   created_at DateTime @default(now()) @map("created_at")
 }
+
+model UserEmbeddings {
+  id        Int    @id @default(autoincrement())
+  user_id   Int    @unique @map("user_id")
+  content   String
+  embedding String
+
+  @@map("user_embeddings")
+}
