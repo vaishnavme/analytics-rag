@@ -8,14 +8,23 @@
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
-    "dev": "NODE_NO_WARNINGS=1 nodemon --exec ts-node --esm src/index.ts",
+    "dev": "NODE_NO_WARNINGS=1 nodemon --exec \"node --loader ts-node/esm\" src/index.ts",
     "start": "NODE_NO_WARNINGS=1 node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
     "@types/node": "^25.0.10",
     "nodemon": "^3.1.11",
+    "prisma": "^7.3.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "@prisma/adapter-better-sqlite3": "^7.3.0",
+    "@prisma/client": "^7.3.0",
+    "chalk": "^5.6.2",
+    "dotenv": "^17.2.3",
+    "readline": "^1.3.0"
   }
 }
