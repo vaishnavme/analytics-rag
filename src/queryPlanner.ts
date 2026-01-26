@@ -104,6 +104,8 @@ Rules:
 - For groupBy on device/car: set "groupByGeneric": true for general queries (e.g., "most common device", "popular car brand"). Set to false only when user asks about specific versions (e.g., "Android versions", "iOS versions", "car models")
 - Use "aggregate" for "average", "sum", "minimum", "maximum"
 - Use "findFirst" for "first", "latest", "oldest", single record queries
+- For "who joined first/earliest": use findFirst with sortBy="created_at" and sortOrder="asc"
+- For "who joined last/latest/recently": use findFirst with sortBy="created_at" and sortOrder="desc"
 - Use "orFilters" for OR conditions (matches ANY of these)
 - Use "filters" for AND conditions (matches ALL of these)
 - For dates: use ISO format "2025-01-01T00:00:00Z"
@@ -253,7 +255,10 @@ User Question: "${userQuery}"
         return prisma.users.findMany(query);
 
       case "findFirst":
-        return prisma.users.findFirst(query);
+        return prisma.users.findFirst({
+          ...query,
+          take: 1,
+        });
 
       case "count":
         return { count: await prisma.users.count({ where: query.where }) };
