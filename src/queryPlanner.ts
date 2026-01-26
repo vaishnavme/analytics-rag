@@ -61,7 +61,6 @@ JSON Format:
   "action": "findMany" | "findFirst" | "count" | "distinct" | "groupBy" | "aggregate",
   "filters": [{ "field": "country", "op": "eq", "value": "India" }],
   "orFilters": [{ "field": "country", "op": "eq", "value": "USA" }],
-  "select": ["id", "first_name", "email"],
   "distinctField": "device",
   "groupByField": "car",
   "groupByGeneric": true,
@@ -72,6 +71,8 @@ JSON Format:
   "limit": 10,
   "skip": 0
 }
+
+IMPORTANT: Do NOT include "select" in the output. Always return all fields.
 
 Filter Operations:
 - "eq": equals (exact match)
@@ -98,6 +99,7 @@ Actions:
 
 Rules:
 - Output ONLY valid JSON, no comments
+- Do NOT include "select" field - always return all fields. Only include "select" if user EXPLICITLY asks for specific fields like "show me only name and email"
 - Use "count" for "how many", "total", "number of"
 - Use "distinct" for "unique", "different types", "all values of"
 - Use "groupBy" for "most popular", "least used", "ranking", "top N by count"
@@ -217,27 +219,25 @@ User Question: "${userQuery}"
       }
     }
 
-    // Build select
-    const select: { [key: string]: boolean } = {};
-    if (dsl.select) {
-      for (const field of dsl.select) {
-        select[field] = true;
-      }
-    }
-
     // Build orderBy
     let orderBy: any = undefined;
     if (dsl.sortBy) {
       orderBy = { [dsl.sortBy]: dsl.sortOrder || "asc" };
     }
 
-    const prismaQuery = {
+    // Always return all fields - ignore select from DSL
+    const prismaQuery: any = {
       where,
-      select: Object.keys(select).length ? select : undefined,
       orderBy,
-      take: dsl.limit,
-      skip: dsl.skip,
     };
+
+    // Only include take/skip if they have valid values
+    if (dsl.limit != null) {
+      prismaQuery.take = dsl.limit;
+    }
+    if (dsl.skip != null) {
+      prismaQuery.skip = dsl.skip;
+    }
 
     return prismaQuery;
   }
