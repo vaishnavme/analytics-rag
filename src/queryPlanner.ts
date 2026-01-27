@@ -251,7 +251,7 @@ User Question: "${userQuery}"
     }
 
     const query = this.buildQueryFromDSL(dsl);
-    console.log("Prisma Query:", JSON.stringify(query, null, 2));
+    // console.log("Prisma Query:", JSON.stringify(query, null, 2));
 
     switch (dsl.action) {
       case "findMany":
@@ -406,7 +406,7 @@ User Question: "${userQuery}"
     const dsl = JSON.parse(dslString) as QueryDSL;
 
     const result = await this.executeDSL(dsl);
-    console.log("Generated result:", result);
+    // console.log("Generated result:", result);
 
     return JSON.stringify(result);
   }

@@ -115,7 +115,6 @@ class AnalyzerAgent {
     const semnaticSearch = new SemanticSearch();
 
     let answer;
-
     switch (queryType) {
       case "structured": {
         const structuredResult = await queryPlanner.getData(userQuery);
@@ -141,6 +140,8 @@ class AnalyzerAgent {
           queryPlanner.getData(userQuery),
           semnaticSearch.getRelaventDocuments(userQuery),
         ]);
+        // console.log("Structured Result:", structuredResult);
+        // console.log("Semantic Results:", semanticResults);
         answer = await this.generateAnswer({
           userQuery,
           result: JSON.stringify({
