@@ -8,7 +8,6 @@ import AnalyzerAgent from "./analyzerAgent.js";
 const chatLoop = async () => {
   while (true) {
     const query = await ask(chalk.blue("You: "));
-    console.log(chalk.gray(`(Debug) User Query: ${query}`));
     const analyzerAgent = new AnalyzerAgent();
     await analyzerAgent.analyze(query);
   }

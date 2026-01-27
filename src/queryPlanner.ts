@@ -100,7 +100,10 @@ Actions:
 Rules:
 - Output ONLY valid JSON, no comments
 - Do NOT include "select" field - always return all fields. Only include "select" if user EXPLICITLY asks for specific fields like "show me only name and email"
-- Use "count" for "how many", "total", "number of"
+- Use "count" for simple "how many", "total", "number of" (single count)
+- Use "groupBy" when question asks "how many X per/by/from which Y" or "breakdown by" or "count by country/device/etc"
+  - Example: "how many managers from which country" → groupBy country with job_title filter
+  - Example: "how many users per device" → groupBy device
 - Use "distinct" for "unique", "different types", "all values of"
 - Use "groupBy" for "most popular", "least used", "ranking", "top N by count"
 - For groupBy on device/car: set "groupByGeneric": true for general queries (e.g., "most common device", "popular car brand"). Set to false only when user asks about specific versions (e.g., "Android versions", "iOS versions", "car models")

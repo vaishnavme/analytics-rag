@@ -1,15 +1,19 @@
+import chalk from "chalk";
 import { ollamFetch } from "./lib/utils.js";
 import QueryPlanner from "./queryPlanner.js";
+import SemanticSearch from "./semanticSearch.js";
 
 interface History {
   user: string;
   agent: string;
 }
 
+type QueryType = "structured" | "semantic" | "hybrid";
+
 class AnalyzerAgent {
   private history: History[] = [];
 
-  async generateAnswer({
+  private async generateAnswer({
     userQuery,
     result,
   }: {
@@ -68,7 +72,7 @@ class AnalyzerAgent {
 
         Result data:
         ${result}
-`;
+    `;
 
     const ollamaResponse = (await ollamFetch({
       model: "qwen2.5:3b-instruct",
@@ -79,15 +83,87 @@ class AnalyzerAgent {
     return ollamaResponse.response;
   }
 
-  async analyze(userQuery: string): Promise<string> {
+  private async getQueryClassification(userQuery: string): Promise<QueryType> {
+    const prompt = `
+      You are a query classifier. Analyze the user's question and determine the best approach.
+
+      Return ONLY one of these values:
+      - "structured" - for exact filters, counts, aggregations, rankings (e.g., "how many users from India", "top 5 car brands", "users who joined in 2025")
+      - "semantic" - for similarity/context queries (e.g., "find users similar to John", "users interested in technology", "people like software engineers")
+      - "hybrid" - when both approaches would help (e.g., "find Android users who might like gaming", "software engineers from Asia")
+
+      User question: "${userQuery}"
+
+      Response (one word only):`;
+
+    const response = (await ollamFetch({
+      model: "qwen2.5:3b-instruct",
+      type: "generate",
+      text: prompt,
+    })) as { response: string };
+
+    const result = response.response.toLowerCase().trim();
+
+    if (result.includes("semantic")) return "semantic";
+    if (result.includes("hybrid")) return "hybrid";
+    return "structured";
+  }
+
+  async analyze(userQuery: string) {
+    const queryType = await this.getQueryClassification(userQuery);
     const queryPlanner = new QueryPlanner();
-    const result = await queryPlanner.getData(userQuery);
-    console.log("Raw Query Result:", result);
-    const answer = await this.generateAnswer({ userQuery, result });
+    const semnaticSearch = new SemanticSearch();
 
-    console.log("Query Result:", answer);
+    let answer;
 
-    return "Analyzing query: " + userQuery;
+    switch (queryType) {
+      case "structured": {
+        const structuredResult = await queryPlanner.getData(userQuery);
+        answer = await this.generateAnswer({
+          userQuery,
+          result: JSON.stringify(structuredResult),
+        });
+        break;
+      }
+
+      case "semantic": {
+        const semanticResult =
+          await semnaticSearch.getRelaventDocuments(userQuery);
+        answer = await this.generateAnswer({
+          userQuery,
+          result: JSON.stringify(semanticResult),
+        });
+        break;
+      }
+
+      case "hybrid": {
+        const [structuredResult, semanticResults] = await Promise.all([
+          queryPlanner.getData(userQuery),
+          semnaticSearch.getRelaventDocuments(userQuery),
+        ]);
+        answer = await this.generateAnswer({
+          userQuery,
+          result: JSON.stringify({
+            structured: structuredResult,
+            semantic: semanticResults,
+          }),
+        });
+        break;
+      }
+
+      default:
+        throw new Error(`Unknown query type: ${queryType}`);
+    }
+    this.history.push({
+      user: userQuery,
+      agent: answer,
+    });
+
+    console.log(
+      chalk.blue("Bot: "),
+      chalk.white(answer.trim()),
+      chalk.gray(queryType.toLowerCase()),
+    );
   }
 }
 
