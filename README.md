@@ -16,18 +16,6 @@ _**Flow**_
 4. Pass result to LLM
 5. LLM converts result to natural language based on user query.
 
-**Pros.**
-
-- Only 3 layers (User query, SQL generation, NL response)
-- No vectorDB
-- Fast
-
-**Cons**
-
-- LLM can generate wrong SQL query
-- Complext query does not work properly
-- Might produce different result for same query
-
 ---
 
 **2. Query Planner**
