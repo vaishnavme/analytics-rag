@@ -1,4 +1,21 @@
-### POC for testing RAG on user data
+# Analytics RAG POC
+
+Problem Statement:
+How can a person ask query in natural lanugage and get result as response in natural language.
+
+**Approach**
+
+1. Text to SQL
+2. Embeddings
+3. Hybrid (Text to SQL & Embeddings)
+
+**Table of Content**
+
+- [Implementation](#implementation)
+- [Experiments](#experiments)
+- [Getting Started](#getting-started)
+
+## Implementation
 
 #### Approach
 
