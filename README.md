@@ -99,3 +99,78 @@ User IDs: 689 and 708 are somewhat similar but not as closely related.
 User ID: 348 (Aimil Furst) is a perfect match with itself. hybrid
 
 ```
+
+---
+
+## Getting Started
+
+### Prerequisites
+
+- **Node.js** v18+
+- **Ollama** running locally with models:
+  - `qwen2.5:3b-instruct` (for text generation)
+  - `nomic-embed-text` (for embeddings)
+
+### Installation
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/your-username/analytics-rag.git
+cd analytics-rag
+
+# 2. Install dependencies
+npm install
+
+# 3. Setup Prisma and database
+npx prisma generate
+npx prisma migrate dev
+
+# 4. Seed the database with mock data
+npm run dev
+# Then run: seedDb() function or import mock_data.json
+```
+
+### Running Ollama
+
+```bash
+# Install Ollama (macOS)
+brew install ollama
+
+# Start Ollama server
+ollama serve
+
+# Pull required models (in another terminal)
+ollama pull qwen2.5:3b-instruct
+ollama pull nomic-embed-text
+```
+
+### Build Knowledge Base (Embeddings)
+
+Before using semantic search, generate embeddings for all users:
+
+```bash
+npm run dev
+```
+
+### Usage
+
+```bash
+# Development mode (with hot reload)
+npm run dev
+
+# Production mode
+npm run build
+npm start
+```
+
+### Example Queries
+
+| Query Type  | Example                                   |
+| ----------- | ----------------------------------------- |
+| Count       | "How many users from India?"              |
+| Filter      | "List female managers"                    |
+| Ranking     | "Top 5 car brands"                        |
+| Aggregation | "Users by country"                        |
+| Semantic    | "Find creative professionals"             |
+| Similarity  | "Users similar to software engineers"     |
+| Hybrid      | "Android developers interested in gaming" |

@@ -22,24 +22,37 @@ class SemanticSearch {
     return dotProduct / (magnitudeA * magnitudeB);
   }
 
-  async getRelaventDocuments(userQuery: string) {
-    const queryEmbedding = await this.getQueryEmbedding(userQuery);
+  async getRelaventDocuments(
+    userQuery: string,
+    options: { topK?: number; minSimilarity?: number } = {},
+  ) {
+    const { topK = 5, minSimilarity = 0.4 } = options;
+
+    // Normalize query to lowercase for consistent matching
+    const normalizedQuery = userQuery.toLowerCase().trim();
+    const queryEmbedding = await this.getQueryEmbedding(normalizedQuery);
 
     const embeddingRows = await prisma.userEmbeddings.findMany();
 
-    const similarities = embeddingRows.map((row) => {
-      const rowEmbedding = JSON.parse(row.embedding) as number[];
-      const similarity = this.cosineSimilarity(queryEmbedding, rowEmbedding);
-      return {
-        user_id: row.user_id,
-        content: row.content,
-        similarity,
-      };
-    });
+    const similarities = embeddingRows
+      .map((row) => {
+        const rowEmbedding = JSON.parse(row.embedding) as number[];
+        const similarity = this.cosineSimilarity(queryEmbedding, rowEmbedding);
+        return {
+          user_id: row.user_id,
+          content: row.content,
+          similarity: Math.round(similarity * 1000) / 1000,
+        };
+      })
+      .filter((item) => item.similarity >= minSimilarity);
 
     similarities.sort((a, b) => b.similarity - a.similarity);
 
-    return similarities.slice(0, 5);
+    console.log(
+      `[SemanticSearch] Query: "${normalizedQuery}" | Found: ${similarities.length} matches above ${minSimilarity}`,
+    );
+
+    return similarities.slice(0, topK);
   }
 }
 

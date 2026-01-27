@@ -4,26 +4,35 @@ import { ollamFetch } from "./lib/utils.js";
 
 class BuildKnowledgeBase {
   private getUserDocument(user: Users): string {
-    return `
-      User ID: ${user.id}
-      Name: ${user.first_name} ${user.last_name}
-      Email: ${user.email}
-      Gender: ${user.gender}
-      Job Title: ${user.job_title}
-      Device: ${user.device}
-      Car: ${user.car}
-      Language: ${user.language}
-      Country: ${user.country}
-      Created At: ${user.created_at}
+    const name = `${user.first_name} ${user.last_name}`;
+    const jobTitle = user.job_title?.toLowerCase() || "";
+    const country = user.country?.toLowerCase() || "";
+    const device = user.device?.toLowerCase() || "";
+    const car = user.car?.toLowerCase() || "";
+    const language = user.language?.toLowerCase() || "";
+    const gender = user.gender?.toLowerCase() || "";
+
+    // Natural language document - lowercase for better semantic matching
+    // Repeat important terms multiple times for stronger signal
+    return `this person is a ${jobTitle}. their job title is ${jobTitle}. they work as a ${jobTitle}.
+        ${name.toLowerCase()} is a ${jobTitle} from ${country}.
+        they are located in ${country}. country: ${country}.
+        they use ${device}. their device is ${device}.
+        they drive a ${car}. car brand: ${car}.
+        they speak ${language}. language: ${language}.
+        gender: ${gender}.
+        user id: ${user.id}.
+        job: ${jobTitle}, location: ${country}, device: ${device}, car: ${car}
     `.trim();
   }
 
   async buildKnowledgeBase() {
     await prisma.$connect();
 
+    const usersCount = await prisma.users.count();
     const users = await prisma.users.findMany();
 
-    let count = 0;
+    let count = 1;
 
     await Promise.all(
       users.map(async (user) => {
@@ -53,6 +62,10 @@ class BuildKnowledgeBase {
           console.log(`Processed user ID ${count++}: userId:${user.id}`);
         } catch (err) {
           console.log(`Error processing user ID ${user.id}:`, err);
+        } finally {
+          if (count >= usersCount) {
+            console.log("Knowledge base build complete.");
+          }
         }
       }),
     );
