@@ -3,6 +3,12 @@
 Problem Statement:
 How can a person ask query in natural lanugage and get result as response in natural language.
 
+Workflow
+
+- User's natural language query is classified as structured, semantic, or hybrid
+- Based on classification, the appropriate method is called to fetch results
+- LLM converts the result back to natural language
+
 **Approach**
 
 1. Text to SQL
