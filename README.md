@@ -81,40 +81,46 @@ Result: **Failed**
 ```
 Que: who use android
 Ans:
-Based on the similarity scores provided in the JSON data, here are the top matches for each user ID:
+Based on the semantic analysis provided in the JSON data, here are the key details for each person:
 
-User ID: 7 - Ranice Klein
-Most Similar to User ID: 911 - Terrell Scedall
+User ID: 309 - Software Consultant (Ezra Dudding)
+Job Title: Software Consultant
+Location: Chile
+Device Used: Android 8.1, up to Android 10, MIUI 12
+Car Brand: Chrysler
+Language: Uzbek
+Gender: Male
+User ID: 282 - Help Desk Operator (Obadiah Guillerman)
+Job Title: Help Desk Operator
+Location: Morocco
+Device Used: Android 10, FunTouch 10
+Car Brand: Cadillac
+Language: Burmese
+Gender: Male
+User ID: 75 - Programmer Analyst I (Flint Claesens)
+Job Title: Programmer Analyst I
+Location: China
+Device Used: Android 7.0
+Car Brand: Mitsubishi
+Language: Oriya
+Gender: Male
+User ID: 550 - Software Test Engineer III (Jammal Athelstan)
+Job Title: Software Test Engineer III
+Location: Honduras
+Device Used: Android 7.0
+Car Brand: Mazda
+Language: Bengali
+Gender: Male
+User ID: 261 - Help Desk Technician (Forbes Bransdon)
+Job Title: Help Desk Technician
+Location: Myanmar
+Device Used: Android 4.0
+Car Brand: Chevrolet
+Language: Uighur
+Gender: Male
+The JSON data also includes a similarity score for each of these entries, which ranges from 0.651 to 0.659, indicating that these entries have varying degrees of relevance or overlap in their job titles and personal information.
 
-Similarity Score: 0.5624
-User ID: 911 - Terrell Scedall
-Most Similar to User ID: 7 - Ranice Klein
-
-Similarity Score: 0.5590
-User ID: 708 - Genia Scally
-Most Similar to User ID: 689 - Kingston Donner
-
-Similarity Score: 0.5583
-User ID: 689 - Kingston Donner
-Most Similar to User ID: 708 - Genia Scally
-
-Similarity Score: 0.5556
-User ID: 348 - Aimil Furst
-Most Similar to User ID: 348 - Aimil Furst
-
-Similarity Score: 1.0000 (Perfect Match)
-In this dataset, the user ID of Aimil Furst has a perfect match with itself in terms of similarity scores.
-
-Additional Notes:
-User IDs 7 and 911 are very similar to each other.
-User IDs 708 and 689 have some similarities but not as strong as the main matches above.
-The user ID 348 has a perfect match with itself, indicating that it might be a unique entry or part of an internal system.
-Summary:
-User ID: 7 (Ranice Klein) - Matches to User ID: 911
-User ID: 911 (Terrell Scedall) - Matches to User ID: 7
-User IDs: 689 and 708 are somewhat similar but not as closely related.
-User ID: 348 (Aimil Furst) is a perfect match with itself. hybrid
-
+If you need more specific insights or have any questions about the details provided, feel free to ask! hybrid
 ```
 
 ---
