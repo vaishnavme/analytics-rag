@@ -14,16 +14,11 @@ class BuildKnowledgeBase {
 
     // Natural language document - lowercase for better semantic matching
     // Repeat important terms multiple times for stronger signal
-    return `this person is a ${jobTitle}. their job title is ${jobTitle}. they work as a ${jobTitle}.
-        ${name.toLowerCase()} is a ${jobTitle} from ${country}.
-        they are located in ${country}. country: ${country}.
-        they use ${device}. their device is ${device}.
-        they drive a ${car}. car brand: ${car}.
-        they speak ${language}. language: ${language}.
-        gender: ${gender}.
-        user id: ${user.id}.
-        job: ${jobTitle}, location: ${country}, device: ${device}, car: ${car}
-    `.trim();
+    return `This person works as a ${jobTitle} and lives in ${country}.
+  They use a ${device} as their primary device and drive a ${car}.
+  They speak ${language} and identify as ${gender}.
+  Overall, this is a ${jobTitle} based in ${country} who uses a ${device} and drives a ${car}.
+  `.trim();
   }
 
   async buildKnowledgeBase() {
