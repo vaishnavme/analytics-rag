@@ -14,7 +14,7 @@ class BuildKnowledgeBase {
 
     // Natural language document - lowercase for better semantic matching
     // Repeat important terms multiple times for stronger signal
-    return `This person works as a ${jobTitle} and lives in ${country}.
+    return `This person ${name} works as a ${jobTitle} and lives in ${country}.
   They use a ${device} as their primary device and drive a ${car}.
   They speak ${language} and identify as ${gender}.
   Overall, this is a ${jobTitle} based in ${country} who uses a ${device} and drives a ${car}.
