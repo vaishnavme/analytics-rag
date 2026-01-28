@@ -26,7 +26,7 @@ class SemanticSearch {
     userQuery: string,
     options: { topK?: number; minSimilarity?: number } = {},
   ) {
-    const { topK = 5, minSimilarity = 0.4 } = options;
+    const { topK = 5, minSimilarity = 0.6 } = options;
 
     // Normalize query to lowercase for consistent matching
     const normalizedQuery = userQuery.toLowerCase().trim();

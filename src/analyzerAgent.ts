@@ -114,6 +114,8 @@ class AnalyzerAgent {
     const queryPlanner = new QueryPlanner();
     const semnaticSearch = new SemanticSearch();
 
+    console.debug(chalk.gray(`[AnalyzerAgent] Classified as: ${queryType}`));
+
     let answer;
     switch (queryType) {
       case "structured": {
@@ -161,7 +163,7 @@ class AnalyzerAgent {
     });
 
     console.log(
-      chalk.blue("Bot: "),
+      chalk.blue("Bot:"),
       chalk.white(answer.trim()),
       chalk.gray(queryType.toLowerCase()),
     );
